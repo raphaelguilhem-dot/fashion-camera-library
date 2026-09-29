@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pletor Camera Angle Library</title>
+<meta name="description" content="A complete library of camera angle prompts for AI fashion photoshoots. Copy 35 ready-made prompts across height, framing, orientation, position, lens and aperture, or match the angle of your own reference photo on Pletor.">
+<meta property="og:title" content="Pletor Camera Angle Library">
+<meta property="og:description" content="35 camera angle prompts for AI fashion photoshoots, plus a free tool that matches the camera angle of any reference photo on Pletor.">
+<meta property="og:image" content="https://fashion-camera-library.vercel.app/og.jpg">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#F7F5F3; --surface:#FFFFFF; --surface-2:#F1EEEA; --ink:#1B1B1B; --ink-2:rgba(27,27,27,.62); --ink-3:rgba(27,27,27,.42);
+  --line:rgba(27,27,27,.09); --line-2:rgba(27,27,27,.16); --accent:#FF4901; --accent-ink:#FFFFFF; --photo:#ECEAE7;
+  --shadow:0 1px 2px rgba(27,27,27,.04),0 8px 24px -12px rgba(27,27,27,.12);
+  --sans:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#121110; --surface:#1B1A19; --surface-2:#232120; --ink:#F3F1EE; --ink-2:rgba(243,241,238,.66); --ink-3:rgba(243,241,238,.42);
+    --line:rgba(243,241,238,.08); --line-2:rgba(243,241,238,.16); --accent:#FF5A1A; --accent-ink:#FFFFFF; --photo:#2A2826;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -14px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#121110; --surface:#1B1A19; --surface-2:#232120; --ink:#F3F1EE; --ink-2:rgba(243,241,238,.66); --ink-3:rgba(243,241,238,.42);
+  --line:rgba(243,241,238,.08); --line-2:rgba(243,241,238,.16); --accent:#FF5A1A; --accent-ink:#FFFFFF; --photo:#2A2826;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -14px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html{color-scheme:light}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(var(--line) 1px,transparent 1px);background-size:22px 22px;background-attachment:fixed}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:clamp(16px,4vw,40px);padding-block:0 72px}
+a{color:inherit}
+
+/* top bar */
+.bar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:22px}
+.mark{font-weight:600;font-size:20px;letter-spacing:-.04em;text-decoration:none;display:flex;align-items:center;gap:8px}
+.mark i{width:9px;height:9px;border-radius:50%;background:var(--accent);display:inline-block}
+.pill{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 18px;border-radius:999px;font:500 14px/1 var(--sans);letter-spacing:-.01em;
+  text-decoration:none;border:1px solid var(--line-2);background:var(--surface);color:var(--ink);cursor:pointer;transition:background .15s,border-color .15s,transform .15s}
+.pill:hover{border-color:var(--ink-3)}
+.pill.dark{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.pill.dark:hover{opacity:.88}
+.pill:focus-visible,.tab:focus-visible,.search input:focus-visible,.shot:focus-visible,.pick:focus-visible,.chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* hero */
+.hero{padding-block:48px 40px;display:grid;gap:22px;justify-items:start}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 12px 6px 10px;border-radius:999px;background:var(--surface);border:1px solid var(--line);
+  font-size:12.5px;font-weight:500;color:var(--ink-2)}
+.eyebrow i{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+h1{font-weight:500;font-size:clamp(34px,5.4vw,64px);line-height:1.02;letter-spacing:-.045em;margin:0;max-width:17ch;text-wrap:balance;text-transform:uppercase}
+h1 em{font-style:normal;color:var(--accent)}
+.lede{margin:0;max-width:60ch;color:var(--ink-2);font-size:16.5px;text-wrap:pretty}
+.specs{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 0;padding:0;list-style:none}
+.specs li{font:500 12px/1 var(--mono);letter-spacing:.02em;padding:8px 11px;border-radius:8px;background:var(--surface-2);color:var(--ink-2)}
+.specs b{color:var(--ink);font-weight:500}
+
+/* controls */
+.controls{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;
+  padding-block:14px;margin-bottom:22px;background:linear-gradient(var(--bg) 70%,transparent)}
+.tabs{display:flex;gap:4px;padding:4px;border-radius:999px;background:var(--surface);border:1px solid var(--line);max-width:100%;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;border:0;background:transparent;color:var(--ink-2);font:500 14px/1 var(--sans);height:34px;padding:0 14px;border-radius:999px;cursor:pointer;display:flex;align-items:center;gap:8px}
+.tab span{font:500 11px/1 var(--mono);color:var(--ink-3)}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--bg)}
+.tab[aria-selected="true"] span{color:var(--bg);opacity:.6}
+.search{position:relative;flex:0 1 280px;min-width:0}
+.search input{width:100%;height:42px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:400 14px var(--sans);padding:0 16px 0 40px}
+.search input::placeholder{color:var(--ink-3)}
+.search svg{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--ink-3)}
+@media (max-width:1080px){.search{flex-basis:100%}}
+
+/* grid */
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+@media (max-width:860px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.grid{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;
+  animation:rise .5s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i,0) * 35ms)}
+@keyframes rise{from{transform:translateY(10px)}to{transform:none}}
+.shot{display:block;border:0;padding:0;margin:0;width:100%;aspect-ratio:3/4;background:var(--photo);cursor:zoom-in;position:relative;overflow:hidden}
+.shot img{width:100%;height:100%;object-fit:cover;object-position:50% 50%;display:block;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.card:hover .shot img{transform:scale(1.025)}
+.shot .ar{position:absolute;right:10px;bottom:10px;font:500 10.5px/1 var(--mono);padding:6px 8px;border-radius:6px;background:rgba(27,27,27,.62);color:#fff;letter-spacing:.04em;backdrop-filter:blur(6px)}
+.body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:12px;flex:1}
+.meta{display:flex;justify-content:space-between;align-items:center;font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.meta .cat{display:flex;align-items:center;gap:6px}
+.meta .cat i{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+h2{margin:0;font-weight:500;font-size:21px;line-height:1.15;letter-spacing:-.03em;text-wrap:balance}
+.prompt{margin:0;flex:1;border:1px solid var(--line);background:var(--surface-2);border-radius:12px;padding:14px;font:400 12.5px/1.6 var(--mono);color:var(--ink-2);
+  max-height:212px;overflow:auto;overscroll-behavior:contain}
+.prompt p{margin:0 0 8px}
+.prompt p:last-child{margin:0}
+.prompt b{font-weight:500;color:var(--ink);letter-spacing:.02em}
+.prompt .key{color:var(--ink)}
+.prompt .key b{color:var(--accent)}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.actions .pill{justify-content:center;height:40px;padding:0 12px;font-size:13.5px}
+.actions .pill.done{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.empty{grid-column:1/-1;text-align:center;padding:60px 16px;color:var(--ink-2)}
+
+footer{margin-top:56px;padding-top:24px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;color:var(--ink-3);font-size:13px}
+
+/* lightbox */
+dialog{border:0;padding:0;background:transparent;max-width:min(92vw,620px);max-height:92vh;overflow:visible}
+dialog::backdrop{background:rgba(18,17,16,.82);backdrop-filter:blur(4px)}
+dialog img{display:block;max-height:86vh;width:auto;max-width:100%;border-radius:14px}
+dialog .cap{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-top:10px;color:#fff;font:500 13px var(--sans)}
+dialog .cap button{background:rgba(255,255,255,.14);color:#fff;border:0;border-radius:999px;height:32px;padding:0 14px;font:500 13px var(--sans);cursor:pointer}
+
+/* create your own angle */
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.hero-cta{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:6px}
+.pill.accent{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);height:46px;padding:0 22px;font-size:15px}
+.pill.accent:hover{filter:brightness(1.06)}
+.pill.accent svg{flex:none}
+.hero-cta small{color:var(--ink-3);font-size:13px}
+.studio{margin-bottom:28px;background:var(--surface);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:clamp(16px,3vw,28px);display:grid;gap:20px}
+.studio-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:12px}
+.studio-head h3{margin:0;font-weight:500;font-size:24px;letter-spacing:-.035em}
+.studio-head p{margin:4px 0 0;color:var(--ink-2);max-width:62ch}
+.studio-close{border:0;background:var(--surface-2);color:var(--ink-2);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:18px;line-height:1}
+.studio-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:20px;align-items:start}
+@media (max-width:760px){.studio-body{grid-template-columns:1fr}}
+.drop-wrap{position:relative}
+.drop{position:relative;display:grid;place-items:center;align-content:center;text-align:center;gap:8px;aspect-ratio:3/4;max-width:100%;border:1.5px dashed var(--line-2);border-radius:16px;background:var(--surface-2);color:var(--ink-2);cursor:pointer;overflow:hidden;padding:16px;transition:border-color .15s,background .15s}
+.drop:hover,.drop.over{border-color:var(--accent)}
+.drop:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+.drop input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.drop b{color:var(--ink);font-weight:500;font-size:15px}
+.drop span{font-size:13px}
+.drop.has-photo{border-style:solid;border-color:var(--line);background:var(--photo)}
+.drop.has-photo > svg,.drop.has-photo > b,.drop.has-photo > span{visibility:hidden}
+.drop img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none}
+.remove{position:absolute;top:10px;right:10px;z-index:2;width:34px;height:34px;border-radius:50%;border:0;background:rgba(27,27,27,.7);color:#fff;font-size:18px;line-height:1;cursor:pointer}
+.remove:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.out{display:flex;flex-direction:column;gap:14px;min-width:0}
+.step-label{display:flex;align-items:center;gap:10px;font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.step-label i{font-style:normal;width:22px;height:22px;border-radius:50%;background:var(--surface-2);color:var(--ink);display:grid;place-items:center;font-size:11px;letter-spacing:0}
+.step-label.done i{background:var(--accent);color:var(--accent-ink)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line-2);background:var(--surface);color:var(--ink);border-radius:999px;height:30px;padding:0 12px;font:500 12.5px var(--sans);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.picker{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px;max-height:340px;overflow:auto;overscroll-behavior:contain;padding:2px}
+.pick{border:0;padding:0;background:var(--photo);border-radius:10px;overflow:hidden;cursor:pointer;position:relative;aspect-ratio:3/4;box-shadow:inset 0 0 0 1px var(--line)}
+.pick img{width:100%;height:100%;object-fit:cover;display:block}
+.pick span{position:absolute;left:0;right:0;bottom:0;padding:16px 6px 5px;font:500 10px/1.2 var(--sans);color:#fff;text-align:left;background:linear-gradient(transparent,rgba(0,0,0,.72))}
+.pick span b{display:block;font:500 9.5px/1 var(--mono);letter-spacing:.06em;opacity:.8;margin-bottom:2px}
+.pick[aria-pressed="true"]{box-shadow:0 0 0 3px var(--accent)}
+.pick[aria-pressed="true"]::after{content:"✓";position:absolute;top:6px;right:6px;width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;font:600 12px/20px var(--sans);text-align:center}
+.prompt-edit{width:100%;min-height:300px;resize:vertical;border:1px solid var(--line);background:var(--surface-2);border-radius:12px;padding:14px;font:400 12.5px/1.6 var(--mono);color:var(--ink)}
+.prompt-edit:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.edit-note{margin:-4px 0 0;font-size:12.5px;color:var(--ink-3)}
+.steps{margin:0;padding:0;list-style:none;display:grid;gap:10px;counter-reset:s;font-size:13.5px}
+.steps li{counter-increment:s;display:grid;grid-template-columns:24px 1fr;gap:12px;align-items:start;color:var(--ink-2)}
+.steps li::before{content:counter(s);width:24px;height:24px;border-radius:50%;background:var(--surface-2);color:var(--ink);display:grid;place-items:center;font:500 11px var(--mono)}
+.steps b{color:var(--ink);font-weight:500}
+.notice{margin:0;padding:12px 14px;border-radius:12px;background:var(--surface-2);color:var(--ink-2);font-size:14px}
+.notice.err{color:var(--ink);box-shadow:inset 3px 0 0 var(--accent)}
+.out .actions{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:560px){.out .actions{grid-template-columns:1fr}}
+.howto{margin:0;font-size:13px;color:var(--ink-3)}
+.result{display:flex;flex-direction:column;gap:12px;border-top:1px solid var(--line);padding-top:16px}
+@media (prefers-reduced-motion:reduce){.card{animation:none}.shot img{transition:none}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="bar">
+    <a class="mark" href="https://pletor.ai" target="_blank" rel="noopener">pletor<i></i></a>
+    <a class="pill dark" href="https://app.pletor.ai/flow/a34ef2ac-f4c3-4d8c-874f-27b818464d24" target="_blank" rel="noopener">Open the workflow</a>
+  </header>
+
+  <section class="hero">
+    <span class="eyebrow"><i></i>Photo Camera Angles Library · 35 prompts</span>
+    <h1>A complete library of <em>camera angle prompts</em> for AI fashion photoshoots</h1>
+    <p class="lede">Thirty-five camera setups across six axes you can stack: height, framing, orientation, position, lens and aperture. Every image was re-shot from the same master reference, so only the camera changes. Each prompt is written in four parts (angle, camera, frame, style). Copy one, attach your own model reference, and shoot.</p>
+    <ul class="specs">
+      <li>Model <b>Nano Banana Pro</b></li>
+      <li>Ratio <b>3:4</b></li>
+      <li>Resolution <b>2K</b></li>
+      <li>Input <b>1 master reference</b></li>
+    </ul>
+    <div class="hero-cta">
+      <button class="pill accent" type="button" id="open-studio" aria-controls="studio" aria-expanded="false">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        Create your own angle
+      </button>
+      <small>Upload a reference photo, pick the closest angle, get a prompt that matches it. Free, in your browser.</small>
+    </div>
+  </section>
+
+  <section class="studio" id="studio" hidden aria-labelledby="studio-title">
+    <div class="studio-head">
+      <div>
+        <h3 id="studio-title">Match the camera of any photo</h3>
+        <p>Upload a photo shot from the angle you want, then pick the closest angle from the library. You get that angle's prompt plus a line telling Nano Banana Pro to copy the camera angle, lens, height and framing of your photo. Your photo stays on your device.</p>
+      </div>
+      <button class="studio-close" type="button" id="close-studio" aria-label="Close">×</button>
+    </div>
+    <div class="studio-body">
+      <div class="drop-wrap">
+        <label class="drop" id="drop">
+          <input id="ref-file" type="file" accept="image/jpeg,image/png,image/webp">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>
+          <b>Drop your angle reference</b>
+          <span>or click to choose · JPG, PNG or WebP</span>
+          <img id="ref-preview" alt="" hidden>
+        </label>
+        <button class="remove" type="button" id="remove-photo" hidden aria-label="Remove photo">×</button>
+      </div>
+      <div class="out" id="out" aria-live="polite">
+        <div class="step-label" id="lbl-photo"><i>1</i>Upload a reference photo</div>
+        <p class="notice err" id="photo-err" hidden></p>
+        <div class="step-label" id="lbl-pick"><i>2</i>Pick the closest angle</div>
+        <div class="chips" id="pick-chips" role="group" aria-label="Filter angles"></div>
+        <div class="picker" id="picker" role="group" aria-label="Library angles"></div>
+        <div class="result" id="result" hidden></div>
+        <p class="howto" id="intro-note">Nothing is uploaded: the photo is only shown here so you can compare it with the library. You'll attach it yourself in Pletor.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="controls">
+    <div class="tabs" role="tablist" aria-label="Angle group" id="tabs"></div>
+    <label class="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="Search angles, e.g. low, profile, 24mm" aria-label="Search angles">
+    </label>
+  </div>
+
+  <main class="grid" id="grid"></main>
+
+  <footer>
+    <span>Built from the Pletor workflow “Photo Camera Angles Library”.</span>
+    <a href="https://app.pletor.ai/flow/a34ef2ac-f4c3-4d8c-874f-27b818464d24" target="_blank" rel="noopener">app.pletor.ai/flow/a34ef2ac…</a>
+  </footer>
+</div>
+
+<dialog id="lb">
+  <img id="lb-img" alt="">
+  <div class="cap"><span id="lb-cap"></span><button type="button" id="lb-close">Close</button></div>
+</dialog>
+
+<script>
+const FLOW = "https://app.pletor.ai/flow/a34ef2ac-f4c3-4d8c-874f-27b818464d24";
+const GROUPS = ["Height","Framing","Orientation","Position","Lens","Aperture"];
+// Every Camera section starts with this sentence; it is kept out of the data below.
+const RESHOOT = "Re-photograph the exact same subject, outfit, lighting and location as the reference image. Change only the camera: ";
+
+const ANGLES = [
+  {"code": "H01", "group": "Height", "name": "Eye Level", "camera": "Camera positioned exactly at the main subject's eye height, lens aimed level at the horizon, perfectly parallel to the ground.", "frame": "Vertical lines in the scene stay parallel with no convergence; the subject reads at true, neutral proportions, as a person standing opposite would see them.", "style": "Photorealistic still photograph, natural proportions and geometry, sharp focus on the subject, high resolution."},
+  {"code": "H02", "group": "Height", "name": "High Angle", "camera": "Camera raised clearly above the main subject's head height, tilted downward at roughly 30–45 degrees so the subject is seen from above.", "frame": "The ground plane fills most of the background; the subject appears slightly smaller and foreshortened from above, shoulders reading wider than the lower body.", "style": "Photorealistic still photograph, natural proportions and geometry, sharp focus on the subject, high resolution."},
+  {"code": "H03", "group": "Height", "name": "Low Angle", "camera": "Camera placed clearly below the main subject's chest height, tilted upward so the subject towers over the lens.", "frame": "Vertical lines converge upward and the sky or ceiling becomes the backdrop; the subject's lower body reads longer and the figure gains visual power and scale.", "style": "Photorealistic still photograph, natural proportions and geometry, sharp focus on the subject, high resolution."},
+  {"code": "H04", "group": "Height", "name": "Chest Level", "camera": "Camera positioned at the main subject's chest height, lens level, a hand-span below the eye line.", "frame": "Near-neutral perspective with a barely perceptible upward tilt toward the face; flattering, intimate, with the subject reading marginally taller than reality.", "style": "Photorealistic still photograph, natural proportions and geometry, sharp focus on the subject, high resolution."},
+  {"code": "H05", "group": "Height", "name": "Ground Level", "camera": "Camera resting at ground level, lens aimed level across the floor plane, not tilted upward.", "frame": "The floor becomes a dramatic foreground plane rushing toward the lens; feet, footwear, and anything low anchor the frame while the upper scene compresses toward the top.", "style": "Photorealistic still photograph, natural proportions and geometry, sharp focus on the subject, high resolution."},
+  {"code": "H06", "group": "Height", "name": "Worm's Eye / Ultra Low", "camera": "Camera at ground level directly beneath or almost beneath the main subject, aimed steeply upward at 60–80 degrees.", "frame": "Extreme foreshortening: nearby low elements loom huge, the subject stretches upward with strongly converging vertical lines, sky or ceiling dominating behind them.", "style": "Photorealistic still photograph, natural proportions and geometry, sharp focus on the subject, high resolution."},
+  {"code": "H07", "group": "Height", "name": "Overhead / Top-Down", "camera": "Camera positioned directly above the main subject, lens aimed straight down at a perfect 90 degrees to the ground.", "frame": "The scene flattens into graphic top-down geometry; the ground reads as a two-dimensional backdrop and the subject is seen from the crown, with no horizon in frame.", "style": "Photorealistic still photograph, natural proportions and geometry, sharp focus on the subject, high resolution."},
+  {"code": "F01", "group": "Framing", "name": "Extreme Close-Up", "camera": "Camera extremely close to the main subject, framing only a single small detail of them.", "frame": "One fragment — an eye, lips, a texture, a material detail — fills the whole frame edge to edge; everything outside razor-thin focus melts away.", "style": "Photorealistic still photograph, natural proportions and geometry, sharp focus on the subject, high resolution."},
+  {"code": "F02", "group": "Framing", "name": "Close-Up", "camera": "Camera close to the main subject, framed tightly on the head and neck.", "frame": "The face fills the frame with the top of the head near the upper edge; background reduces to soft out-of-focus tone with no readable environment.", "style": "Photorealistic still photograph, natural proportions and geometry, sharp focus on the subject, high resolution."},
+  {"code": "F03", "group": "Framing", "name": "Medium Close-Up", "camera": "Camera framing the main subject from mid-chest and shoulders up to just above the head.", "frame": "Face and shoulder line dominate; enough garment enters frame to read the neckline while the background stays soft and secondary.", "style": "Photorealistic still photograph, natural proportions and geometry, sharp focus on the subject, high resolution."},
+  {"code": "F04", "group": "Framing", "name": "Medium Shot", "camera": "Camera framing the main subject from the waist up.", "frame": "Torso, arms and face all read clearly; hand gestures stay inside the frame and the environment shows as context along the edges without competing.", "style": "Photorealistic still photograph, natural proportions and geometry, sharp focus on the subject, high resolution."},
+  {"code": "F05", "group": "Framing", "name": "Medium Wide Shot", "camera": "Camera framing the main subject from just above the knees up, with headroom above.", "frame": "Most of the outfit and full arm gestures read; the frame balances subject presence with a first clear slice of the surrounding scene.", "style": "Photorealistic still photograph, natural proportions and geometry, sharp focus on the subject, high resolution."},
+  {"code": "F06", "group": "Framing", "name": "Wide Shot", "camera": "Camera far enough back to frame the main subject's entire body head to toe, with margin above and below.", "frame": "The full silhouette and footwear read clearly while the surrounding scene fills the rest of the frame; the subject remains the unmistakable focal point.", "style": "Photorealistic still photograph, natural proportions and geometry, sharp focus on the subject, high resolution."},
+  {"code": "F07", "group": "Framing", "name": "Long Shot", "camera": "Camera positioned well back from the main subject, who occupies roughly a quarter to a third of the frame height.", "frame": "The surrounding scene dominates the composition; the subject reads as a clear figure within a larger world, placed deliberately against the environment.", "style": "Photorealistic still photograph, natural proportions and geometry, sharp focus on the subject, high resolution."},
+  {"code": "F09", "group": "Framing", "name": "Establishing Shot", "camera": "Camera positioned to take in the full location — the architecture, space and light that define where the scene happens — before any person matters.", "frame": "Strong compositional lines of the environment lead the eye through the frame; any figure present is staffage, there to give the space scale and life.", "style": "Photorealistic still photograph, natural proportions and geometry, sharp focus on the subject, high resolution."},
+  {"code": "O01", "group": "Orientation", "name": "Straight-On", "camera": "Camera aimed squarely at the front of the main subject, lens axis perpendicular to their shoulders, horizon perfectly level.", "frame": "Symmetrical, frontal geometry: both shoulders equidistant from the lens, features balanced, an honest and direct read of the subject.", "style": "Photorealistic still photograph, natural proportions and geometry, sharp focus on the subject, high resolution."},
+  {"code": "O02", "group": "Orientation", "name": "Three-Quarter Angle", "camera": "Camera positioned 45 degrees off the main subject's front axis, level horizon.", "frame": "Both the front and one side of the subject read simultaneously; depth appears through the receding far side, giving the figure roundness and dimension.", "style": "Photorealistic still photograph, natural proportions and geometry, sharp focus on the subject, high resolution."},
+  {"code": "O03", "group": "Orientation", "name": "Profile / Side View", "camera": "Camera positioned exactly 90 degrees to the side of the main subject, level with the horizon.", "frame": "A pure side-on silhouette: the outline of face or form draws the composition, with the direction the subject faces creating strong lateral lines through the frame.", "style": "Photorealistic still photograph, natural proportions and geometry, sharp focus on the subject, high resolution."},
+  {"code": "O04", "group": "Orientation", "name": "Back View / Rear Angle", "camera": "Camera positioned directly behind the main subject, aimed at their back.", "frame": "The subject's back frames the foreground while whatever they face becomes the scene's destination; the viewer looks with the subject rather than at them.", "style": "Photorealistic still photograph, natural proportions and geometry, sharp focus on the subject, high resolution."},
+  {"code": "O05", "group": "Orientation", "name": "Dutch Angle / Tilt", "camera": "Camera rolled 10–25 degrees off level so the entire horizon tilts diagonally across the frame.", "frame": "Vertical elements lean uniformly to one side; the diagonal horizon injects tension, energy and instability into an otherwise ordinary composition.", "style": "Photorealistic still photograph, natural proportions and geometry, sharp focus on the subject, high resolution."},
+  {"code": "O06", "group": "Orientation", "name": "Steep High Angle", "camera": "Camera raised high above the main subject and tilted down steeply at roughly 60–75 degrees — steeper than a high angle, short of a full top-down.", "frame": "The ground reads as the dominant backdrop while the subject retains some facial visibility; overhead light falls with the lens axis, keeping shadows tight beneath the figure.", "style": "Photorealistic still photograph, natural proportions and geometry, sharp focus on the subject, high resolution."},
+  {"code": "O07", "group": "Orientation", "name": "Low Tilt-Up", "camera": "Camera held low near waist height and tilted upward at roughly 30–45 degrees toward the main subject's face.", "frame": "Jawline, chest and shoulders lead the composition with converging verticals behind; a swaggering, chin-forward read shy of a full worm's eye.", "style": "Photorealistic still photograph, natural proportions and geometry, sharp focus on the subject, high resolution."},
+  {"code": "P01", "group": "Position", "name": "Over-the-Shoulder", "camera": "Camera positioned just behind and beside a foreground figure's shoulder, aimed past it at the main subject beyond.", "frame": "The out-of-focus shoulder and head edge frame one side of the composition; the main subject reads sharp in the remaining space, creating instant depth and relationship.", "style": "Photorealistic still photograph, natural proportions and geometry, sharp focus on the subject, high resolution."},
+  {"code": "P02", "group": "Position", "name": "Point-of-View", "camera": "Camera placed exactly where the main subject's eyes would be, aimed at what they are looking at.", "frame": "The scene reads in first person: the subject's own hands may enter the lower frame edge, and everything sits at natural human eye height and reach.", "style": "Photorealistic still photograph, natural proportions and geometry, sharp focus on the subject, high resolution."},
+  {"code": "P03", "group": "Position", "name": "Reverse Angle", "camera": "Camera positioned on the exact opposite side of the interaction from the previous framing, mirroring an over-the-shoulder from the other participant's side.", "frame": "The formerly-facing figure is now seen from behind at frame edge while the other becomes the sharp subject; geometry mirrors the counter-shot for a matched pair.", "style": "Photorealistic still photograph, natural proportions and geometry, sharp focus on the subject, high resolution."},
+  {"code": "P04", "group": "Position", "name": "Close Profile", "camera": "Camera at 90 degrees to the main subject's face, framed tightly from shoulder to crown.", "frame": "The facial profile line — forehead, nose, lips, chin — draws a single sculptural contour against a soft background, with negative space in front of the gaze.", "style": "Photorealistic still photograph, natural proportions and geometry, sharp focus on the subject, high resolution."},
+  {"code": "P05", "group": "Position", "name": "Back-to-Camera", "camera": "Camera behind the main subject at a medium distance, the subject centered and clearly composed facing away into the scene.", "frame": "Back, shoulders and stance carry the storytelling; the unseen face creates anonymity while whatever the subject faces gives the frame narrative pull.", "style": "Photorealistic still photograph, natural proportions and geometry, sharp focus on the subject, high resolution."},
+  {"code": "P07", "group": "Position", "name": "Over Own Shoulder", "camera": "Camera positioned close behind the main subject, just above and beside their shoulder, aimed past it at whatever they are looking at.", "frame": "The subject's shoulder, neck and hair edge frame one side of the composition in soft near-foreground focus, while the scene they face reads sharp beyond; intimate, voyeuristic depth from a single figure.", "style": "Photorealistic still photograph, natural proportions and geometry, sharp focus on the subject, high resolution."},
+  {"code": "L01", "group": "Lens", "name": "Normal Focal Length", "camera": "Camera at a natural conversational distance from the main subject, using a standard focal length equivalent to 50mm.", "frame": "Spatial relationships read exactly as the human eye sees them: no stretching, no compression, honest proportions and natural depth falloff.", "style": "Photorealistic still photograph, natural proportions and geometry, sharp focus on the subject, high resolution."},
+  {"code": "L02", "group": "Lens", "name": "Wide-Angle", "camera": "Camera physically close to the scene using a wide-angle lens equivalent to 24mm, taking in an expanded field of view.", "frame": "Foreground elements enlarge and stretch toward the frame edges while the background recedes fast; space feels expanded, dynamic and slightly dramatic.", "style": "Photorealistic still photograph, natural proportions and geometry, sharp focus on the subject, high resolution."},
+  {"code": "L03", "group": "Lens", "name": "Ultra-Wide", "camera": "Camera very close to the main subject with an ultra-wide lens equivalent to 14–16mm.", "frame": "Aggressive perspective: nearby forms balloon, straight lines bow near the edges, and space plunges away from the lens with vertiginous depth.", "style": "Photorealistic still photograph, natural proportions and geometry, sharp focus on the subject, high resolution."},
+  {"code": "L05", "group": "Lens", "name": "Macro", "camera": "Camera centimeters from a small detail of the main subject or scene, using a macro lens at near 1:1 magnification.", "frame": "Microscopic texture becomes landscape; depth of field shrinks to millimeters so a single sliver is sharp while everything before and behind dissolves instantly.", "style": "Photorealistic still photograph, natural proportions and geometry, sharp focus on the subject, high resolution."},
+  {"code": "L07", "group": "Lens", "name": "Fisheye", "camera": "Camera very close to the main subject with a fisheye lens covering a near-180-degree field of view.", "frame": "The entire frame bows: straight lines curve outward from a bulging center, the horizon arcs, and the subject's nearest point exaggerates dramatically toward the lens.", "style": "Photorealistic still photograph, natural proportions and geometry, sharp focus on the subject, high resolution."},
+  {"code": "A01", "group": "Aperture", "name": "f/1.4 · Wide Open", "camera": "Camera lens wide open at f/1.4, focused precisely on the main subject's nearest key detail.", "frame": "Depth of field is razor thin: only the exact focal plane is sharp while everything even slightly before or behind it dissolves into large, soft, glowing bokeh; the background becomes pure abstract color and light.", "style": "Photorealistic still photograph, natural proportions and geometry, high resolution."},
+  {"code": "A04", "group": "Aperture", "name": "f/11 · Deep Focus", "camera": "Camera lens stopped down to f/11 for deep focus across the whole scene.", "frame": "Near-total sharpness: foreground, subject and background all render crisply with real texture at every distance; no bokeh, no separation by blur — depth reads through light and composition instead.", "style": "Photorealistic still photograph, natural proportions and geometry, high resolution."},
+];
+
+ANGLES.forEach(a => { a.img = `img/${a.code}.webp`; a.thumb = `thumb/${a.code}.jpg`; });
+
+const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const promptText = a => `Angle:\n${a.name}\n\nCamera:\n${RESHOOT}${a.camera}\n\nFrame:\n${a.frame}\n\nStyle:\n${a.style}`;
+const copyWith = (btn, text, fallback) => {
+  const done = () => { btn.textContent = "Copied"; btn.classList.add("done"); setTimeout(() => { btn.textContent = "Copy prompt"; btn.classList.remove("done"); }, 1600); };
+  try { navigator.clipboard.writeText(text).then(done, fallback); } catch (err) { fallback(); }
+};
+
+const grid = document.getElementById("grid");
+const tabs = document.getElementById("tabs");
+let filter = "all";
+try { const f = localStorage.getItem("angle-filter"); if (f === "all" || GROUPS.includes(f)) filter = f; } catch (e) {}
+
+tabs.innerHTML = [["all", "All", ANGLES.length], ...GROUPS.map(g => [g, g, ANGLES.filter(a => a.group === g).length])]
+  .map(([f, label, n]) => `<button class="tab" role="tab" data-f="${f}" aria-selected="${f === filter}">${label} <span>${n}</span></button>`).join("");
+
+function render(){
+  const q = document.getElementById("q").value.trim().toLowerCase();
+  const list = ANGLES.filter(a => (filter === "all" || a.group === filter) && (!q || [a.code, a.group, a.name, a.camera, a.frame].join(" ").toLowerCase().includes(q)));
+  grid.innerHTML = list.length ? list.map((a,i) => `
+    <article class="card" style="--i:${i}">
+      <button class="shot" type="button" data-code="${a.code}" aria-label="View ${esc(a.name)} full size">
+        <img src="${a.img}" alt="${esc(a.name)} camera angle: ${esc(a.camera)}" loading="${i < 6 ? "eager" : "lazy"}">
+        <span class="ar">3:4</span>
+      </button>
+      <div class="body">
+        <div class="meta"><span>Angle ${a.code}</span><span class="cat"><i></i>${a.group}</span></div>
+        <h2>${esc(a.name)} Prompt</h2>
+        <div class="prompt" tabindex="0" aria-label="${esc(a.name)} prompt">
+          <p class="key"><b>Angle</b> ${esc(a.name)}</p>
+          <p class="key"><b>Camera</b> ${esc(RESHOOT + a.camera)}</p>
+          <p><b>Frame</b> ${esc(a.frame)}</p>
+          <p><b>Style</b> ${esc(a.style)}</p>
+        </div>
+        <div class="actions">
+          <button class="pill" type="button" data-copy="${a.code}">Copy prompt</button>
+          <a class="pill dark" href="${FLOW}" target="_blank" rel="noopener">Use in Pletor</a>
+        </div>
+      </div>
+    </article>`).join("") : `<p class="empty">No angles match “${esc(q)}”. Try “low”, “profile” or “wide”.</p>`;
+}
+
+tabs.addEventListener("click", e => {
+  const t = e.target.closest(".tab");
+  if (!t) return;
+  filter = t.dataset.f;
+  tabs.querySelectorAll(".tab").forEach(x => x.setAttribute("aria-selected", x === t));
+  try { localStorage.setItem("angle-filter", filter); } catch (e) {}
+  render();
+});
+document.getElementById("q").addEventListener("input", render);
+
+const lb = document.getElementById("lb");
+grid.addEventListener("click", e => {
+  const copy = e.target.closest("[data-copy]");
+  if (copy) {
+    const a = ANGLES.find(x => x.code === copy.dataset.copy);
+    copyWith(copy, promptText(a), () => { const r = document.createRange(); r.selectNodeContents(copy.closest(".body").querySelector(".prompt")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); copy.textContent = "Press ⌘C"; });
+    return;
+  }
+  const shot = e.target.closest(".shot");
+  if (shot) {
+    const a = ANGLES.find(x => x.code === shot.dataset.code);
+    document.getElementById("lb-img").src = a.img;
+    document.getElementById("lb-img").alt = a.name;
+    document.getElementById("lb-cap").textContent = `${a.code} · ${a.name}`;
+    lb.showModal();
+  }
+});
+document.getElementById("lb-close").addEventListener("click", () => lb.close());
+lb.addEventListener("click", e => { if (e.target === lb) lb.close(); });
+
+render();
+
+/* ---------- Create your own angle: reference photo + closest library angle ---------- */
+const REF_TEXT = "\n\nReferences: The first reference image is the model reference: keep her face, hair, body and every piece of clothing and accessories exactly as they are in it. The second reference image is a camera guide only: match its camera angle, camera height, lens and focal length, and framing as closely as possible, and ignore that photo's person, clothing and background.";
+const studio = document.getElementById("studio");
+const openBtn = document.getElementById("open-studio");
+const drop = document.getElementById("drop");
+const fileInput = document.getElementById("ref-file");
+const preview = document.getElementById("ref-preview");
+const removeBtn = document.getElementById("remove-photo");
+const picker = document.getElementById("picker");
+const pickChips = document.getElementById("pick-chips");
+const result = document.getElementById("result");
+const photoErr = document.getElementById("photo-err");
+let photoUrl = null;
+let picked = null;
+let pickFilter = "all";
+
+function openStudio(){
+  studio.hidden = false;
+  openBtn.setAttribute("aria-expanded", "true");
+  if (!picker.childElementCount) renderPicker();
+  studio.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start"});
+}
+openBtn.addEventListener("click", openStudio);
+document.getElementById("close-studio").addEventListener("click", () => { studio.hidden = true; openBtn.setAttribute("aria-expanded", "false"); openBtn.focus(); });
+
+function renderPicker(){
+  pickChips.innerHTML = ["all", ...GROUPS].map(g => `<button class="chip" type="button" data-g="${g}" aria-pressed="${g === pickFilter}">${g === "all" ? "All" : g}</button>`).join("");
+  picker.innerHTML = ANGLES.filter(a => pickFilter === "all" || a.group === pickFilter).map(a => `
+    <button class="pick" type="button" data-code="${a.code}" aria-pressed="${a === picked}" aria-label="${a.code} ${esc(a.name)}">
+      <img src="${a.thumb}" alt="" loading="lazy"><span><b>${a.code}</b>${esc(a.name)}</span>
+    </button>`).join("");
+}
+pickChips.addEventListener("click", e => { const c = e.target.closest(".chip"); if (!c) return; pickFilter = c.dataset.g; renderPicker(); });
+picker.addEventListener("click", e => {
+  const p = e.target.closest(".pick");
+  if (!p) return;
+  picked = ANGLES.find(a => a.code === p.dataset.code);
+  picker.querySelectorAll(".pick").forEach(x => x.setAttribute("aria-pressed", x === p));
+  showResult();
+});
+
+function updateLabels(){
+  document.getElementById("lbl-photo").classList.toggle("done", !!photoUrl);
+  document.getElementById("lbl-pick").classList.toggle("done", !!picked);
+}
+
+function showResult(){
+  updateLabels();
+  if (!picked) { result.hidden = true; return; }
+  const a = picked;
+  const text = promptText(a) + (photoUrl ? REF_TEXT : "");
+  result.hidden = false;
+  result.innerHTML = `
+    <div class="meta"><span>Angle ${a.code} · Yours</span><span class="cat"><i></i>${a.group}</span></div>
+    <h2>${esc(a.name)} Prompt</h2>
+    ${photoUrl ? "" : `<p class="notice">Upload your reference photo to add the line that tells Nano Banana Pro to match its camera. Without it, this is the library prompt as is.</p>`}
+    <label class="sr-only" for="prompt-edit">Your prompt</label>
+    <textarea class="prompt-edit" id="prompt-edit" spellcheck="false">${esc(text)}</textarea>
+    <p class="edit-note">Edit anything before you copy, for example "lens equivalent to 35mm" if you know the focal length of your photo.</p>
+    <div class="actions">
+      <button class="pill" type="button" id="copy-mine">Copy prompt</button>
+      <a class="pill dark" href="${FLOW}" target="_blank" rel="noopener" id="go-pletor">Generate on Pletor</a>
+      <button class="pill" type="button" id="again">${photoUrl ? "Try another photo" : "Upload a photo"}</button>
+    </div>
+    <ol class="steps">
+      <li><span>Open the workflow and click <b>Clone flow</b>. It runs on your own Pletor account.</span></li>
+      <li><span>Attach your model photo to the <b>Master Reference</b> node, then paste the prompt into the prompt node of the angle you picked, “Prompt - ${a.code} ${esc(a.name)}”, replacing its text.</span></li>
+      <li><span>Add an <b>Upload Image</b> node with your reference photo and connect it to the “Angle - ${a.code}” image node, <b>after</b> the Master Reference, so it's the second image.</span></li>
+      <li><span>Check the model is <b>Nano Banana Pro</b>, then click <b>Run</b> on that node.</span></li>
+    </ol>`;
+  const box = document.getElementById("prompt-edit");
+  const copyBtn = document.getElementById("copy-mine");
+  copyBtn.addEventListener("click", () => copyWith(copyBtn, box.value, () => { box.focus(); box.select(); copyBtn.textContent = "Press ⌘C"; }));
+  document.getElementById("go-pletor").addEventListener("click", () => { try { navigator.clipboard.writeText(box.value).catch(() => {}); } catch (e) {} });
+  document.getElementById("again").addEventListener("click", () => fileInput.click());
+}
+
+function clearPhoto(){
+  if (photoUrl) URL.revokeObjectURL(photoUrl);
+  photoUrl = null;
+  preview.hidden = true; preview.removeAttribute("src");
+  drop.classList.remove("has-photo");
+  removeBtn.hidden = true;
+  showResult();
+}
+removeBtn.addEventListener("click", clearPhoto);
+
+function handleFile(file){
+  if (!file) return;
+  photoErr.hidden = true;
+  if (!/^image\/(jpeg|png|webp)$/.test(file.type)) { photoErr.textContent = "Upload a JPG, PNG or WebP image."; photoErr.hidden = false; return; }
+  if (photoUrl) URL.revokeObjectURL(photoUrl);
+  photoUrl = URL.createObjectURL(file);
+  preview.onerror = () => { clearPhoto(); photoErr.textContent = "That image couldn't be opened. Try another file."; photoErr.hidden = false; };
+  preview.src = photoUrl;
+  preview.hidden = false;
+  drop.classList.add("has-photo");
+  removeBtn.hidden = false;
+  showResult();
+}
+
+fileInput.addEventListener("change", () => { handleFile(fileInput.files[0]); fileInput.value = ""; });
+["dragenter","dragover"].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.add("over"); }));
+["dragleave","drop"].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.remove("over"); }));
+drop.addEventListener("drop", e => handleFile(e.dataTransfer.files[0]));
+if (location.hash === "#your-angle") openStudio();
+</script>
+</body>
+</html>
