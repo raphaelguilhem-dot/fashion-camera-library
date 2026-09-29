@@ -301,6 +301,8 @@ const ANGLES = [
 
 ANGLES.forEach(a => { a.img = `img/${a.code}.webp`; a.thumb = `thumb/${a.code}.jpg`; });
 
+// Node labels in the workflow drop the " / " and " · " separators; O06 keeps its original node name.
+const nodeName = a => a.code === "O06" ? "Top-Lit Vertical" : a.name.replace(/ [\/·] /g, " ");
 const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const promptText = a => `Angle:\n${a.name}\n\nCamera:\n${RESHOOT}${a.camera}\n\nFrame:\n${a.frame}\n\nStyle:\n${a.style}`;
 const copyWith = (btn, text, fallback) => {
@@ -440,7 +442,7 @@ function showResult(){
     </div>
     <ol class="steps">
       <li><span>Open the workflow and click <b>Clone flow</b>. It runs on your own Pletor account.</span></li>
-      <li><span>Attach your model photo to the <b>Master Reference</b> node, then paste the prompt into the prompt node of the angle you picked, “Prompt - ${a.code} ${esc(a.name)}”, replacing its text.</span></li>
+      <li><span>Attach your model photo to the <b>Master Reference</b> node, then paste the prompt into the prompt node of the angle you picked, “Prompt - ${a.code} ${esc(nodeName(a))}”, replacing its text.</span></li>
       <li><span>Add an <b>Upload Image</b> node with your reference photo and connect it to the “Angle - ${a.code}” image node, <b>after</b> the Master Reference, so it's the second image.</span></li>
       <li><span>Check the model is <b>Nano Banana Pro</b>, then click <b>Run</b> on that node.</span></li>
     </ol>`;
